@@ -6,75 +6,23 @@
 /*   By: mathou <mathou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 14:58:02 by mathou            #+#    #+#             */
-/*   Updated: 2025/09/03 17:41:36 by mathou           ###   ########.fr       */
+/*   Updated: 2025/09/03 18:17:06 by mathou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/so_long.h"
 
-int update_map_info(t_map *map, int x, int y)
+t_map   *map(void)
 {
-        if (map->grid[x][y] == 'P')
-        {
-            map->entry += 1;
-            map->px = x;
-            map->py = y;
-        }
-        else if (map->grid[x][y] == 'E')
-        {
-            map->exit += 1;
-            map->ex = x;
-            map->ey = y;
-        }
-        else if (map->grid[x][y] == 'C')
-            map->collectibles += 1;
-}
+    t_map   *map;
 
-int valid_map_info(t_map *map, int x, int y)
-{
-    if (map->entry > 1 || map->exit > 1)
+    map = malloc(sizeof(t_map));
+    if (!map)
         return (0);
-    if ((x == 0 || x == map->width) && map->grid[x][y] != '1')
-        return (0);
-    if ((y == 0 || y == map->height) && map->grid[x][y] != '1')
-        return (0);
-}
-int original_value(t_map *map, int x, int y)
-{
-    if (map->grid[x][y] == 'P')
-        return (1);
-    if (map->grid[x][y] == 'E')
-        return (1);
-    if (map->grid[x][y] == 'C')
-        return (1);
-    if (map->grid[x][y] == '0')
-        return (1);
-    if (map->grid[x][y] == '1')
-        return (1);
-    return (0);
-}
-
-int fill_reasonable_map(t_map *map, char *av_map)
-{
-    int x;
-    int y;
-
-    if (!stock_map(av_map, map)) // si ca marche pas, map non rectangulaire ou insuffisante
-        return (0);
-    x = 0;
-    while (x <= map->witdh)
-    {
-        y = 0;
-        while (y <= map->height)
-        {
-            update_map_info(map, x, y);
-            if (!orginal_value(map, x, y) || !valid_map_info(map, x, y)) // un seuil a ete depasse dans les conditions, ou une valeur interdite a été utilisee
-                return (0);
-            y++;
-        }
-        x++;
-    }
-    return (1);
+    map->entry = 0;
+    map->exit = 0;
+    map->collectibles = 0;
+    return (map);
 }
 
 int find_path(t_map *map, int x, int y)
@@ -97,6 +45,11 @@ int find_path(t_map *map, int x, int y)
     else if (find_path(map, x, y - 1))
         path = 1;
     return (path);
+}
+
+void    restore_map(t_map *map)
+{
+    while ()
 }
 
 t_map   *read_map(char *av_map)
