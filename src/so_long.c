@@ -6,7 +6,7 @@
 /*   By: mathou <mathou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 23:08:27 by mathou            #+#    #+#             */
-/*   Updated: 2025/09/03 19:38:45 by mathou           ###   ########.fr       */
+/*   Updated: 2025/09/03 20:04:56 by mathou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int main(int agc, char **agv)
 {
-    context;
+    t_game *context;
     t_map *map;
     
     map = ckeck_map(agc, agv);
@@ -29,5 +29,5 @@ int main(int agc, char **agv)
         update_map(map, context);
     }
     close_context(context);
-    free(map);
+    free_map(map);
 }
