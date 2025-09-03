@@ -6,7 +6,7 @@
 /*   By: mathou <mathou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 14:29:27 by mathou            #+#    #+#             */
-/*   Updated: 2025/09/03 15:52:11 by mathou           ###   ########.fr       */
+/*   Updated: 2025/09/03 19:42:25 by mathou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,13 @@ typedef struct  s_map
     size_t  collectibles;
     size_t  exit;
     size_t  entry;
-}               t_map;
-struct  s
+    char    **grid;
+    int width;
+    int height;
+    int px;
+    int py;
+    int ex;
+    int ey;
+}       t_map;
 
 #endif

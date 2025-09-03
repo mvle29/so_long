@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read_map.c                                         :+:      :+:    :+:   */
+/*   check_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mathou <mathou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 14:58:02 by mathou            #+#    #+#             */
-/*   Updated: 2025/09/03 18:17:06 by mathou           ###   ########.fr       */
+/*   Updated: 2025/09/03 19:37:18 by mathou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/so_long.h"
 
-t_map   *map(void)
+t_map   *init_map(void)
 {
     t_map   *map;
 
@@ -34,7 +34,6 @@ int find_path(t_map *map, int x, int y)
         return (1);
     else if (map->grid[x][y] == '1' || !original_value(map, x, y))
         return (0);
-    ft_lowercase(map->grid[x][y]);
     map->grid[x][y] += 3;
     if (find_path(map, x + 1, y))
         path = 1;
@@ -49,22 +48,41 @@ int find_path(t_map *map, int x, int y)
 
 void    restore_map(t_map *map)
 {
-    while ()
+    int x;
+    int y;
+
+    x = 0;
+    while (x <= map->width)
+    {
+        y = 0;
+        while (y <= map->height)
+        {
+            if (!original_value(map, x, y))
+                map->grid[x][y] -= 3;
+            y++;
+        }
+        x++;
+    }
 }
 
-t_map   *read_map(char *av_map)
+t_map   *check_map(char *av_map)
 {
     t_map   *map;
+    int error;
 
+    error = 0;
     map = init_map();
     if (!map)
-        return (0);
-    if (!fill_reasonable_map(map, av_map));
-        return (free_map(map));
-    if (map->collectibles < 1 || map->exit != 1 || map->entry != 1)
-        return (free_map(map));
-    if (!find_path(map, map->px, map->py))
-        return (free_map(map));
-    restore_map(map);
+        error = 1;
+    if (!error && !get_map(map, av_map));
+        error = 1;
+    if (!error && map->collectibles < 1 || map->exit != 1 || map->entry != 1)
+        error = 1;
+    if (!error && !find_path(map, map->px, map->py))
+        error = 1;
+    if (!error)
+        restore_map(map);
+    else
+        free_map(map);
     return (map);
 }

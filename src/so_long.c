@@ -6,18 +6,18 @@
 /*   By: mathou <mathou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 23:08:27 by mathou            #+#    #+#             */
-/*   Updated: 2025/09/03 01:46:49 by mathou           ###   ########.fr       */
+/*   Updated: 2025/09/03 19:38:45 by mathou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "../include/so_long.h"
 
 int main(int agc, char **agv)
 {
     context;
-    map;
+    t_map *map;
     
-    map = read_map(agc, agv);
+    map = ckeck_map(agc, agv);
     if (!map)
         return (display_error());
     context = create_context();
