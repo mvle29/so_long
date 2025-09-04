@@ -6,54 +6,23 @@
 /*   By: mathou <mathou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:44:55 by mathou            #+#    #+#             */
-/*   Updated: 2025/09/03 19:55:28 by mathou           ###   ########.fr       */
+/*   Updated: 2025/09/04 14:59:17 by mathou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/so_long.h"
 
-char    *read_map(char *ber_file, t_map *map)
-{
-    char    *tmp;
-    int     len;
-    int     r;
-    char    buf;
-    int     fd;
-
-    fd = open(ber_file, RD_ONLY);
-    if (fd < 1)
-        return (0);
-    r = read(fd, buf, 1);
-    tmp = malloc (sizeof(char));
-    if (!tmp)
-        return (0);
-    while (r)
-    {
-        tmp = ft_strjoin(tmp, &buf);
-        if (!tmp)
-            return (0);
-        r = read(fd, buf, 1);
-    }
-    if (r == -1)
-    {
-        free(tmp);
-        return (0);
-    }
-    tmp = ft_strjoin(tmp, &buf);
-    return (tmp);
-}
-
 int malloc_grid(t_map *map)
 {
     int x;
 
-    map->grid = malloc(sizeof(char*) * (map->width + 1));
+    map->grid = malloc(sizeof(char*) * (map->x_max + 1));
     if (!map->grid)
         return (0);
     x = 0;
-    while (x <= map->width)
+    while (x <= map->x_max)
     {
-        map->grid[x] = malloc(sizeof(char) * (map->height + 1));
+        map->grid[x] = malloc(sizeof(char) * (map->y_max + 1));
         if (!map->grid[x])
             return (0);
         x++;
@@ -61,24 +30,23 @@ int malloc_grid(t_map *map)
     return (1);
 }
 
-int stock_map(char *ber_file, t_map *map)
+int stock_map(char *tmp, t_map *map)
 {
-    char    *tmp;
     int     x;
     int     y;
     int     i;
 
-    tmp = read_map(ber_file, map);
-    if (!tmp || map->width <= 1 || map->height <= 1)
-        return (0);
     if (!malloc_grid(map))
+    {
+        free(tmp);
         return (0);
+    }
     x = 0;
     i = 0;
-    while (x <= map->width)
+    while (x <= map->x_max)
     {
         y = 0;
-        while (y <= map->height)
+        while (y <= map->y_max)
         {
             map->grid[x][y] = tmp[i];
             i++;
@@ -89,19 +57,50 @@ int stock_map(char *ber_file, t_map *map)
     free(tmp);
     return (1);
 }
+int update_map_info(t_map *map, int x, int y)
+{
+    if (map->grid[x][y] == 'P')
+    {
+        map->entry += 1;
+        map->px = x;
+        map->py = y;
+    }
+    else if (map->grid[x][y] == 'E')
+    {
+        map->exit += 1;
+        map->ex = x;
+        map->ey = y;
+    }
+    else if (map->grid[x][y] == 'C')
+        map->collectibles += 1;
+}
 
-int get_map(t_map *map, char *av_map)
+int valid_map_info(t_map *map, int x, int y)
+{
+    if (map->entry > 1 || map->exit > 1)
+        return (0);
+    if ((x == 0 || x == map->x_max) && map->grid[x][y] != '1')
+        return (0);
+    if ((y == 0 || y == map->y_max) && map->grid[x][y] != '1')
+        return (0);
+}
+
+int get_map(t_map *map, char *ber_file)
 {
     int x;
     int y;
+    char    *tmp;
 
-    if (!stock_map(av_map, map)) // si ca marche pas, map non rectangulaire ou insuffisante
+    tmp = extract_map_param(ber_file, map);
+    if (!tmp)
+        return (0);
+    if (!stock_map(tmp, map)) // si ca marche pas, map non rectangulaire ou insuffisante, free tmp dans la fonction
         return (0);
     x = 0;
-    while (x <= map->width)
+    while (x <= map->x_max)
     {
         y = 0;
-        while (y <= map->height)
+        while (y <= map->y_max)
         {
             update_map_info(map, x, y);
             if (!orginal_value(map, x, y) || !valid_map_info(map, x, y)) // un seuil a ete depasse dans les conditions, ou une valeur interdite a été utilisee

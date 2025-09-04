@@ -6,7 +6,7 @@
 /*   By: mathou <mathou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/02 23:08:27 by mathou            #+#    #+#             */
-/*   Updated: 2025/09/03 20:04:56 by mathou           ###   ########.fr       */
+/*   Updated: 2025/09/04 18:36:01 by mathou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,25 @@
 
 int main(int agc, char **agv)
 {
-    t_game *context;
-    t_map *map;
+    t_context   *context;
+    t_map       *map;
+    t_game      *game;
     
-    map = ckeck_map(agc, agv);
+    map = check_map(agc, agv); // Fait
     if (!map)
-        return (display_error());
+        return (display_error()); 
     context = create_context();
     if (!context)
-        return (display_error());
-    while (faut_aff(map, context))
     {
-        test_signals();
-        update_map(map, context);
+        free_map(map);
+        return (display_error());
     }
+    game = init_game(map, context);
+    if (!game)
+        return (display_error());
+    mlx_handle_signals(context, map);
+    mlx_loop(context->mlx);
     close_context(context);
     free_map(map);
+    return (0);
 }

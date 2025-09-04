@@ -36,3 +36,7 @@ PARSING : la map en entree.
 DEV WINDOW : 
 
 INFO : Generalement, le retour d une fonction sera en accord avec son nom. Par exemple, la fonction get_map retourne bien 1 si elle reussit et 0 si elle échoue, car nous n'aurons ainsi pas reussi à get the map.
+
+AVANCEMENT :
+    - est ce qu on remplace les appellations width et height pas x_max et y_max?
+    

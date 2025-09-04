@@ -6,7 +6,7 @@
 /*   By: mathou <mathou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 14:58:02 by mathou            #+#    #+#             */
-/*   Updated: 2025/09/03 19:37:18 by mathou           ###   ########.fr       */
+/*   Updated: 2025/09/04 15:00:45 by mathou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,10 @@ void    restore_map(t_map *map)
     int y;
 
     x = 0;
-    while (x <= map->width)
+    while (x <= map->x_max)
     {
         y = 0;
-        while (y <= map->height)
+        while (y <= map->y_max)
         {
             if (!original_value(map, x, y))
                 map->grid[x][y] -= 3;
@@ -65,7 +65,7 @@ void    restore_map(t_map *map)
     }
 }
 
-t_map   *check_map(char *av_map)
+t_map   *check_nd_get_map(char *av_map)
 {
     t_map   *map;
     int error;
