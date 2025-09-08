@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_map2.c                                         :+:      :+:    :+:   */
+/*   extract_map_param.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mathou <mathou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/04 14:56:43 by mathou            #+#    #+#             */
-/*   Updated: 2025/09/04 14:59:13 by mathou           ###   ########.fr       */
+/*   Created: 2025/09/07 00:55:41 by mathou            #+#    #+#             */
+/*   Updated: 2025/09/07 01:06:52 by mathou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ char    *formatted_map(t_map *map, char *tmp)
     return (tmpb);
 }
 
-char    *extract_map_param(char *ber_file, t_map *map)
+char    *transfer_param(char *ber_file, t_map *map)
 {
     char    *tmp;
     int     fd;

@@ -1,31 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   so_long.c                                          :+:      :+:    :+:   */
+/*   init_game.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mathou <mathou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/02 23:08:27 by mathou            #+#    #+#             */
-/*   Updated: 2025/09/07 03:31:21 by mathou           ###   ########.fr       */
+/*   Created: 2025/09/07 00:51:38 by mathou            #+#    #+#             */
+/*   Updated: 2025/09/08 21:19:17 by mathou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/so_long.h"
+#include "../../include/so_long.h"
 
-int main(int agc, char **agv)
+int init_game(t_map *map)
 {
-    t_map       *map;
-    t_game      *game;
-    
-    map = check_nd_get_map(agc, agv); // Fait
-    if (!map)
-        return (display_error()); 
-    game = init_game(map);
+    t_game  *game;
+
+    game = malloc(sizeof(t_game));
     if (!game)
-        return (display_error()g);
-    mlx_handle_signals(context, map);
-    mlx_loop(context->mlx);
-    close_context(context);
-    free_game(game);
-    return (0);
+    {
+        free_map(map);
+        return (0);
+    }
+    game->map = map;
+    game->context = init_context();
+    game->spritess = init_spritess(game->context, game->map);
+    if (!game->context || !game->spritess)
+    {
+        free_game(game);
+        return (0);
+    }
+    return (1);
 }

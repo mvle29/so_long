@@ -1,31 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   so_long.c                                          :+:      :+:    :+:   */
+/*   hitbox_handling.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mathou <mathou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/02 23:08:27 by mathou            #+#    #+#             */
-/*   Updated: 2025/09/07 03:31:21 by mathou           ###   ########.fr       */
+/*   Created: 2025/09/07 01:47:48 by mathou            #+#    #+#             */
+/*   Updated: 2025/09/07 01:55:24 by mathou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/so_long.h"
+#include "../../include/so_long.h"
 
-int main(int agc, char **agv)
+void    (char ***hb_map, t_map *map) // on get la hb_map, on l update avec la touche pressee et avec l overlap, on update la map en consequence
 {
-    t_map       *map;
-    t_game      *game;
     
-    map = check_nd_get_map(agc, agv); // Fait
-    if (!map)
-        return (display_error()); 
-    game = init_game(map);
-    if (!game)
-        return (display_error()g);
-    mlx_handle_signals(context, map);
-    mlx_loop(context->mlx);
-    close_context(context);
-    free_game(game);
-    return (0);
 }
