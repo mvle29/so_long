@@ -1,54 +1,56 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_nd_get_map.c                                 :+:      :+:    :+:   */
+/*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mathou <mathou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 14:58:02 by mathou            #+#    #+#             */
-/*   Updated: 2025/09/07 01:08:02 by mathou           ###   ########.fr       */
+/*   Updated: 2025/10/10 03:44:12 by mathou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/so_long.h"
 
-void    restore_map(t_map *map)
+void    map_grid_restore(t_map *map)
 {
     int x;
     int y;
 
-    x = 0;
-    while (x <= map->x_max)
+    y = 0;
+    while (y <= map->y_max)
     {
-        y = 0;
-        while (y <= map->y_max)
+        x = 0;
+        while (x <= map->x_max)
         {
             if (!original_value(map, x, y))
-                map->grid[x][y] -= 3;
-            y++;
+                map->grid[y][x] -= 3;
+            if (map->grid[y][x] == 'P')
+                map->grid[y][x] = 0;
+            x++;
         }
-        x++;
+        y++;
     }
 }
 
-t_map   *check_nd_get_map(char *av_map)
+t_map   *map(char *av_map)
 {
     t_map   *map;
-    int error;
 
-    error = 0;
     map = init_map();
     if (!map)
-        error = 1;
-    if (!error && !get_map(map, av_map));
-        error = 1;
-    if (!error && (map->collectibles < 1 || map->exit != 1 || map->entry != 1))
-        error = 1;
-    if (!error && !find_path(map, map->p_pos->x, map->p_pos->y))
-        error = 1;
-    if (!error)
-        restore_map(map);
-    else
+        return (0);
+    map_grid(map, av_map);
+    if (map->collectibles < 1 || map->exit != 1 || map->entry != 1)
+    {
         free_map(map);
+        return (0);
+    }
+    if (!map_grid_playable(map, map->p.x, map->p.y))
+    {
+        free_map(map);
+        return (0);
+    }
+    map_grid_restore(map);
     return (map);
 }

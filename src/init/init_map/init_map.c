@@ -6,11 +6,11 @@
 /*   By: mathou <mathou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 00:48:47 by mathou            #+#    #+#             */
-/*   Updated: 2025/09/08 21:33:13 by mathou           ###   ########.fr       */
+/*   Updated: 2025/10/10 03:51:04 by mathou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/so_long.h"
+#include "../../../include/so_long.h"
 
 t_map   *init_map(void)
 {
@@ -22,22 +22,29 @@ t_map   *init_map(void)
     map->entry = 0;
     map->exit = 0;
     map->collectibles = 0;
+    map->x_max = -1;
+    map->y_max = 0;
+    map->instances = 0;
+    map->grid = 0;
     return (map);
 }
-int init_grid(t_map *map)
+int init_map_grid(t_map *map)
 {
-    int x;
+    int y;
 
-    map->grid = malloc(sizeof(char*) * (map->x_max + 1));
+    map->grid = malloc(sizeof(char*) * (map->y_max + 1));
     if (!map->grid)
         return (0);
-    x = 0;
-    while (x <= map->x_max)
+    y = 0;
+    while (y <= map->y_max)
     {
-        map->grid[x] = malloc(sizeof(char) * map->y_max);
-        if (!map->grid[x])
+        map->grid[y] = malloc(sizeof(char) * (map->x_max + 1));
+        if (!map->grid[y])
+        {
+            free_grid(map, map->grid);
             return (0);
-        x++;
+        }
+        y++;
     }
     return (1);
 }

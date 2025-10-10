@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mavallee <mavallee@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mathou <mathou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 10:38:35 by mavallee          #+#    #+#             */
-/*   Updated: 2024/06/01 15:19:17 by mavallee         ###   ########.fr       */
+/*   Updated: 2025/10/10 03:37:31 by mathou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	unsigned int	i;
 
 	i = 0;
+	bit = 0;
 	while (start < ft_strlen(s) && s[start + i] && i < len)
 		i++;
 	if (!ft_mult(i, sizeof(char)) || !s)
@@ -48,6 +49,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 			&& ft_strlen(dest) > 1)
 			return (NULL);
 	}
+	bit = bit + 1;
 	return (dest);
 }
 /*

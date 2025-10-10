@@ -1,34 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   extract_map_param.c                                :+:      :+:    :+:   */
+/*   map_char.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mathou <mathou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 00:55:41 by mathou            #+#    #+#             */
-/*   Updated: 2025/09/07 01:06:52 by mathou           ###   ########.fr       */
+/*   Updated: 2025/10/10 03:46:23 by mathou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/so_long.h"
+#include "../../../include/so_long.h"
 
-char    *read_map(int fd, t_map *map)
+char    *map_char_get(int fd)
 {
     int     r;
     char    *tmp;
     char    buf;
 
-    r = read(fd, buf, 1);
+    buf = 0;
+    r = read(fd, &buf, 1);
     if (r < 1)
         return (0);
     tmp = 0;
     while (r)
     {
-        tmp = ft_realloc(tmp, 2 + ft_strlen(tmp));
+        tmp = ft_realloc(tmp, sizeof(char) * (2 + ft_strlen(tmp)));
         if (!tmp)
             return (0);
-        ft_strncat(tmp, &buf, 1);
-        r = read(fd, buf, 1);
+        ft_strlcat(tmp, &buf, sizeof(char) * (2 + ft_strlen(tmp)));
+        r = read(fd, &buf, 1);
     }
     if (r < 0)
     {
@@ -37,55 +38,62 @@ char    *read_map(int fd, t_map *map)
     }
     return (tmp);
 }
-void    get_map_scale(t_map *map, char *tmp)
+void    map_info(t_map *map, char *tmp)
 {
     int i;
-    int witdh;
-    int y_max;
+    int n;
 
     i = 0;
-    while (tmp[i])
+    n = 0;
+    while (tmp[n] == '\n')
+        n++;
+    while (tmp[n + i])
     {
-        if (!map->x_max && tmp[i] == '\n')
-            map->x_max = i - 2;
-        else if (tmp[i] == '\n' && i % (map->x_max + 2) != 0)
+        if (map->x_max == -1 && tmp[n + i] == '\n')
+            map->x_max = i - 1;
+        else if (i > 0 && tmp[n + i] == '\n' && tmp[n + i - 1] == '\n')
+            return ;
+        else if (tmp[n + i] == '\n' && (i - 1) % map->x_max != 0 
+            && (i - 1) / map->x_max != map->y_max) // Pas bon : y = 0 par ex
+        {
             map->x_max = 0;
+            return ;
+        }
+        if (tmp[n + i] == '\n' && tmp[n + i + 1])
+            map->y_max++;
         i++;
     }
-    if (i % (map->x_max + 2) != 0)
-        map->x_max = 0;
-    map->y_max = i / (map->x_max + 2);
 }
 
-char    *formatted_map(t_map *map, char *tmp)
+char    *map_char_formatted(char *tmp)
 {
     char    *tmpb;
-    int i;
-    int count;
+    int     i;
+    int     count;
 
-    count = 0;
     i = 0;
-    tmpb = 0;
+    count = 0;
     while (tmp[i])
     {
-        if (tmp[i] && tmp[i] == '\n' && tmp[i + 1] == '\n')
+        tmpb = malloc(sizeof(char) * (count + 1));
+        if (!tmpb)
         {
             free(tmp);
-            return (0); // 2 versions a faire de ce cas a la fin : 1 avec slash n infini, qui marque fin de map, une sans. V sans ici
+            return (0);
         }
         if (tmp[i] != '\n')
+        {
+            tmpb[count] = tmp[i];
             count++;
+        }
         i++;
     }
-    tmpb = ft_realloc(tmpb, count + 1);
-    if (!tmpb)
-        return (0);
-    ft_strcpyex(tmpb, tmp, "\n");
+    tmpb[count] = '\0';
     free(tmp);
     return (tmpb);
 }
 
-char    *transfer_param(char *ber_file, t_map *map)
+char    *map_char(char *ber_file, t_map *map)
 {
     char    *tmp;
     int     fd;
@@ -93,17 +101,17 @@ char    *transfer_param(char *ber_file, t_map *map)
     fd = open(ber_file, O_RDONLY);
     if (fd < 1)
         return (0);
-    tmp = read_map(fd, map);
+    tmp = map_char_get(fd);
     close(fd);
     if (!tmp)
         return (0);
-    get_map_scale(map, tmp);
-    if (map->x_max <= 1 || map->y_max <= 1)
+    map_info(map, tmp);
+    if (map->x_max <= 2 || map->y_max <= 2)
     {
         free(tmp);
         return (0);
     }
-    tmp = formatted_map(map, tmp);
+    tmp = map_char_formatted(tmp);
     if (!tmp)
         return (0);
     return (tmp);

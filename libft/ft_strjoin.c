@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mavallee <mavallee@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mathou <mathou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 10:38:35 by mavallee          #+#    #+#             */
-/*   Updated: 2024/06/01 16:05:33 by mavallee         ###   ########.fr       */
+/*   Updated: 2025/10/10 02:55:15 by mathou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	res[i + j] = '\0';
 	return (res);
 }
+
 /*
 char	*ft_strjoin(char *dst, const char *src, size_t siz)
 {

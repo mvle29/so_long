@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mavallee <mavallee@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mathou <mathou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 08:08:00 by mavallee          #+#    #+#             */
-/*   Updated: 2024/06/03 19:36:41 by mavallee         ###   ########.fr       */
+/*   Updated: 2025/10/10 03:00:52 by mathou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ char				*ft_strnstr(const char *big, const char *little,
 char				*ft_strrchr(const char *s, int c);
 char				*ft_strchr(const char *s, int c);
 void				*ft_calloc(size_t nmemb, size_t size);
+char    			*ft_realloc(char *str, int size); // A RETIRER LIBFT
 
 char				*ft_substr(char const *s, unsigned int start, size_t len);
 char				*ft_strjoin(char const *s1, char const *s2);
