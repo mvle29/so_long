@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_grid.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mathou <mathou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 17:44:55 by mathou            #+#    #+#             */
-/*   Updated: 2025/10/10 03:47:55 by mathou           ###   ########.fr       */
+/*   Updated: 2025/10/21 18:04:14 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,16 @@ void    map_grid_upd(t_map *map, int x, int y)
         map->p.y = y;
     }
     else if (map->grid[y][x] == 'E')
+    {
         map->exit += 1;
+        map->e.x = x;
+        map->e.y = y;
+    }
     else if (map->grid[y][x] == 'C')
         map->collectibles += 1;
 }
 
-void    map_grid(t_map *map, char *ber_file)
+int    map_grid(t_map *map, char *ber_file)
 {
     int x;
     int y;
@@ -61,9 +65,9 @@ void    map_grid(t_map *map, char *ber_file)
 
     tmp = map_char(ber_file, map);
     if (!tmp)
-        return ;
+        return (0);
     if (!map_grid_get(tmp, map)) // si ca marche pas, map non rectangulaire ou insuffisante, free tmp dans la fonction
-        return ;
+        return (0);
     y = 0;
     while (y <= map->y_max)
     {
@@ -72,9 +76,10 @@ void    map_grid(t_map *map, char *ber_file)
         {
             map_grid_upd(map, x, y);
             if (!original_value(map, x, y) || !valid_grid_info(map, x, y)) // un seuil a ete depasse dans les conditions, ou une valeur interdite a été utilisee
-                return ;
+                return (0);
             x++;
         }
         y++;
     }
+    return (1);
 }

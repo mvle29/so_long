@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mathou <mathou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 14:24:15 by mavallee          #+#    #+#             */
-/*   Updated: 2024/12/01 02:12:25 by mathou           ###   ########.fr       */
+/*   Updated: 2025/10/15 11:39:38 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 									?-> count = 0 tableau avc juste null ? "empty" != ""
 */
 
-static int	ft_countstr(char const *s, char c)
+int	ft_countstr(char const *s, char c)
 {
 	int	i;
 	int	count;
@@ -68,7 +68,7 @@ static int	ft_splitstr(char const *s, char c, int i)
 	return (0);
 }
 
-int	free_all(char **tab_str, int k, int i, int j)
+static int	free_all(char **tab_str, int k, int i, int j)
 {
 	int	l;
 

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   test.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/15 11:23:19 by marvin            #+#    #+#             */
+/*   Updated: 2025/10/20 11:15:09 by marvin           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/so_long.h"
 
 void    display_map(t_map *map)
@@ -20,22 +32,28 @@ void    display_map(t_map *map)
     }
 }
 
-int    display_error(void)
+int    display_error(char *str)
 {
-    printf("\n UNE ERREUR A ETE RENCONTREE \n");
-    return (1);
+    printf("\n %s \n", str);
+    exit(1);
 }
 
 int main(int agc, char **agv)
 {
     t_map       *mapp;
-    //t_game      *game;
+    t_game      *game;
     
+    game = 0;
     if (agc != 2)
-        return (display_error());
+        display_error("ARGS INVALIDES");
     mapp = map(agv[1]); // Fait
     if (!mapp)
-        return (display_error());
+        return (display_error("FAILED TO INIT_MAP"));
     display_map(mapp);
-    free_map(mapp);
+    game = init_game(mapp);
+    if (!game)
+        return (display_error("FAILED TO INIT GAME"));
+    signals(game, game->cur);
+    mlx_loop(game->cur->mlx->mlx);
+    //free_game(game);
 }

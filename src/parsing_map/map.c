@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mathou <mathou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 14:58:02 by mathou            #+#    #+#             */
-/*   Updated: 2025/10/10 03:44:12 by mathou           ###   ########.fr       */
+/*   Updated: 2025/10/11 05:34:08 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void    map_grid_restore(t_map *map)
             if (!original_value(map, x, y))
                 map->grid[y][x] -= 3;
             if (map->grid[y][x] == 'P')
-                map->grid[y][x] = 0;
+                map->grid[y][x] = '0';
             x++;
         }
         y++;
@@ -40,8 +40,7 @@ t_map   *map(char *av_map)
     map = init_map();
     if (!map)
         return (0);
-    map_grid(map, av_map);
-    if (map->collectibles < 1 || map->exit != 1 || map->entry != 1)
+    if (!map_grid(map, av_map) || map->collectibles < 1 || map->exit != 1 || map->entry != 1)
     {
         free_map(map);
         return (0);

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   init_context.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mathou <mathou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 00:51:55 by mathou            #+#    #+#             */
-/*   Updated: 2025/09/28 02:22:36 by mathou           ###   ########.fr       */
+/*   Updated: 2025/10/13 05:37:02 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/so_long.h"
+#include "../../../include/so_long.h"
 
 t_mlx   *init_mlx(void)
 {
@@ -23,6 +23,7 @@ t_mlx   *init_mlx(void)
     if (!mlx->mlx)
     {
         free(mlx);
+        printf("MLX_INIT ECHOUE \n");
         return (0);
     }
     mlx->win_w = 600;
@@ -30,9 +31,13 @@ t_mlx   *init_mlx(void)
     mlx->win = mlx_new_window(mlx->mlx, mlx->win_w, mlx->win_h, "so_long!");
     if (!mlx->win)
     {
+        printf("MLX_WIN ECHOUE \n");
+        mlx_destroy_display(mlx->mlx);
+        free(mlx->mlx);
         free(mlx);
         return (0);
     }
+    printf("MLX INIT VALIDE \n");
     return (mlx);
 }
 
@@ -44,17 +49,17 @@ t_context   *init_context(t_mlx *mlx)
         return (0);
     context = malloc(sizeof(t_context));
     if (!context)
-    {
-        free_mlx(mlx);
         return (0);
-    }
     context->mlx = mlx;
-    context->img_h = 400;
-    context->img_w = 600;
-    context->img = mlx_new_img(mlx->mlx, mlx->win, context->img_w, context->img_h);
+    context->img_h = context->mlx->win_h;
+    context->img_w = context->mlx->win_w;
+    context->bpp = 0;
+    context->ll = 0;
+    context->endian = 0;
+    context->img = mlx_new_image(mlx->mlx, context->img_w, context->img_h);
     if (!context->img)
     {
-        free_context(context);
+        free(context);
         return (0);
     }
     context->addr = mlx_get_data_addr(context->img, &context->bpp, &context->ll, &context->endian);

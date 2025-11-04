@@ -22,14 +22,17 @@ char    *ft_realloc(char *str, int size)
             free(str);
         return (0);
     }
-    strr = malloc(size);
+    strr = ft_calloc(size, 1);
     if (!strr)
     {
         if (str)
             free(str);
         return (0);
     }
-    ft_strlcpy(strr, str, ft_strlen(str));
-    free(str);
+    if (str)
+    {
+        ft_strlcpy(strr, str, sizeof(char) * (ft_strlen(str) + 1));
+        free(str);
+    }
     return (strr);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_char.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mathou <mathou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 00:55:41 by mathou            #+#    #+#             */
-/*   Updated: 2025/10/10 03:46:23 by mathou           ###   ########.fr       */
+/*   Updated: 2025/10/11 04:18:49 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ char    *map_char_get(int fd)
     }
     return (tmp);
 }
+
 void    map_info(t_map *map, char *tmp)
 {
     int i;
@@ -45,23 +46,27 @@ void    map_info(t_map *map, char *tmp)
 
     i = 0;
     n = 0;
-    while (tmp[n] == '\n')
+    while (ft_isspace(tmp[i]))
         n++;
     while (tmp[n + i])
     {
-        if (map->x_max == -1 && tmp[n + i] == '\n')
+        if (map->x_max == -1 && ft_isspace(tmp[n + i]))
             map->x_max = i - 1;
-        else if (i > 0 && tmp[n + i] == '\n' && tmp[n + i - 1] == '\n')
-            return ;
-        else if (tmp[n + i] == '\n' && (i - 1) % map->x_max != 0 
-            && (i - 1) / map->x_max != map->y_max) // Pas bon : y = 0 par ex
+        while (ft_isspace(tmp[n + i]) && ft_isspace(tmp[n + i + 1]))
+            n++;
+        if (ft_isspace(tmp[n + i]) && i % (map->x_max + 1) != 0
+            && i / (map->x_max + 1) != map->y_max - 1) // Pas bon : y = 0 par ex
         {
             map->x_max = 0;
             return ;
         }
-        if (tmp[n + i] == '\n' && tmp[n + i + 1])
+        if (ft_isspace(tmp[n + i]) && tmp[n + i + 1])
+        {
+            n++;
             map->y_max++;
-        i++;
+        }
+        else
+            i++;
     }
 }
 
@@ -73,22 +78,23 @@ char    *map_char_formatted(char *tmp)
 
     i = 0;
     count = 0;
+    tmpb = 0;
     while (tmp[i])
     {
-        tmpb = malloc(sizeof(char) * (count + 1));
+        tmpb = ft_realloc(tmpb, sizeof(char) * (count + 2));
         if (!tmpb)
         {
             free(tmp);
             return (0);
         }
-        if (tmp[i] != '\n')
+        if (!ft_isspace(tmp[i]))
         {
             tmpb[count] = tmp[i];
             count++;
         }
+        tmpb[count] = '\0';
         i++;
     }
-    tmpb[count] = '\0';
     free(tmp);
     return (tmpb);
 }
@@ -106,7 +112,7 @@ char    *map_char(char *ber_file, t_map *map)
     if (!tmp)
         return (0);
     map_info(map, tmp);
-    if (map->x_max <= 2 || map->y_max <= 2)
+    if (map->x_max < 2 || map->y_max < 2)
     {
         free(tmp);
         return (0);

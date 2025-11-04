@@ -3,19 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   init_game.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mathou <mathou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 00:51:38 by mathou            #+#    #+#             */
-/*   Updated: 2025/10/05 23:25:38 by mathou           ###   ########.fr       */
+/*   Updated: 2025/10/17 10:14:28 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/so_long.h"
 
-int init_game(t_map *map)
+t_game  *init_game(t_map *map)
 {
     t_game  *game;
-    t_mlx   *mlx;
 
     game = malloc(sizeof(t_game));
     if (!game)
@@ -24,16 +23,30 @@ int init_game(t_map *map)
         return (0);
     }
     game->map = map;
-    mlx = init_mlx();
-    game->cur = init_context(mlx);
-    game->on_screen = init_context(mlx);
-    init_spritess(game, game->cur, map);
+    game->mlx = init_mlx();
+    if (!game->mlx)
+        printf("\n MLX ECHOUE");
+    game->cur = init_context(game->mlx);
+    if (!game->cur)
+        printf("\n CUR ECHOUE");
+    game->on_screen = init_context(game->mlx);
+    if (!game->on_screen)
+        printf("\n SCREEN ECHOUE");
+    /*init_spritess(game, game->cur, map);
     init_instances();
-    init_cam(game);
-    if (!game->cur || !game->spritess || !game->on_screen || game->cam)
+    init_cam(game);*/
+    game->tile = 32;
+    game->spritess = init_spritess(game->cur);
+    //if (!game->spritess)
+    //    printf("\n INIT SPRITESS ECHOUE");
+    //if (game->spritess)
+    game->map->instances = init_instances(game, game->spritess, map);
+    game->map->player = init_instance(game, map->p, 'P', game->spritess);
+    game->cam = init_cam(game);
+    if (!game->cur || !game->on_screen || !game->spritess)//|| !game->map->instances)// || game->cam)
     {
         free_game(game); // free_map dedans
-        return (0);
+        display_error("FAILED TO LOAD GAME");
     }
-    return (1);
+    return (game);
 }

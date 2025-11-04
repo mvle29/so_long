@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mathou <mathou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 08:08:00 by mavallee          #+#    #+#             */
-/*   Updated: 2025/10/10 03:00:52 by mathou           ###   ########.fr       */
+/*   Updated: 2025/10/20 10:59:55 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,10 @@ int					ft_isalpha(int c);
 int					ft_isdigit(int c);
 int					ft_isalnum(int c);
 int					ft_isascii(int c);
+int					ft_isspace(int c);
 int					ft_isprint(int c);
+int					ft_abs(int n);
+int					ft_negative(int n);
 
 int					ft_toupper(int c);
 int					ft_tolower(int c);
@@ -39,9 +42,11 @@ void				*ft_memchr(const void *s, int c, size_t n);
 void				*ft_memcpy(void *dest, const void *src, size_t n);
 void				*ft_memmove(void *dest, void *src, size_t n);
 size_t				ft_strlcpy(char *dest, const char *src, size_t siz);
+int					ft_strcmp(char *s1, char *s2);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
 int					ft_atoi(const char *nptr);
 size_t				ft_strlcat(char *dst, const char *src, size_t siz);
+void				ft_strcat(char *dest, char *src);
 
 char				*ft_strchr(const char *s, int c);
 int					ft_memcmp(const void *s1, const void *s2, size_t n);
@@ -58,6 +63,8 @@ char				*ft_strtrim(char const *s1, char const *set);
 char				*ft_strdup(const char *s);
 
 char				**ft_split(char const *s, char c);
+int					ft_countstr(char const *s, char c);
+void				free_split(char **tab);
 char				*ft_itoa(int n);
 
 char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
