@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mathvall <mathvall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 16:46:44 by mathou            #+#    #+#             */
-/*   Updated: 2025/10/21 15:29:00 by marvin           ###   ########.fr       */
+/*   Updated: 2025/11/06 12:23:35 by mathvall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,13 @@ int signals_key(int keycode, t_game *game)
 
     if (keycode == XK_Escape)
         close_context(game);
-    if (keycode == XK_z)
+    if (keycode == XK_z || keycode == XK_Up)
         signals_playerupd(game, 0, -5, "static");
-    else if (keycode == XK_q)
+    else if (keycode == XK_q || keycode == XK_Left)
         signals_playerupd(game, -5, 0, "static");
-    else if (keycode == XK_s)
+    else if (keycode == XK_s || keycode == XK_Down)
         signals_playerupd(game, 0, 5, "static");
-    else if (keycode == XK_d)
+    else if (keycode == XK_d || keycode == XK_Right)
         signals_playerupd(game, 5, 0, "static");
     else
         return (0);

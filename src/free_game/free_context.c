@@ -12,7 +12,7 @@
 
 #include "../../include/so_long.h"
 
-void    free_mlx(t_mlx *mlx)
+void    free_mlx(t_game *game, t_mlx *mlx)
 {
     if (mlx->mlx)
     {
@@ -22,6 +22,8 @@ void    free_mlx(t_mlx *mlx)
         free(mlx->mlx);
     }
     free(mlx);
+    if (game)
+        game->mlx = 0;
 }
 
 void    free_context(t_context *context)

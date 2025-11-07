@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   pos_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mathou <mathou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mathvall <mathvall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 18:29:23 by mathou            #+#    #+#             */
-/*   Updated: 2025/09/29 05:30:24 by mathou           ###   ########.fr       */
+/*   Updated: 2025/11/06 13:18:12 by mathvall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/so_long.h"
 
-t_pos   img_pos(t_cam *cam, t_pos pix_pos)
+t_pos   img_pos(t_hitbox *cam, t_pos pix_pos)
 {
     t_pos   img_poss;
 

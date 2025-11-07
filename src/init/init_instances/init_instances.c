@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_instances.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mathvall <mathvall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/08 21:13:48 by mathou            #+#    #+#             */
-/*   Updated: 2025/10/21 17:43:39 by marvin           ###   ########.fr       */
+/*   Updated: 2025/11/06 17:50:24 by mathvall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,11 @@ void    init_instance_anim(t_instance *instance, char c)
 t_instance  *init_instance(t_game *game, t_pos map_pos, char c, t_spritess *spritess)
 {
     t_instance  *instance;
-    
+
     instance = malloc(sizeof(t_instance));
     if (!instance)
         return (0);
+    setzero_instance(instance);
     init_instance_sprite(instance, spritess, c);
     if (instance->sprite)
     {
@@ -78,34 +79,28 @@ t_instance  *init_instance(t_game *game, t_pos map_pos, char c, t_spritess *spri
     }
     return (instance);
 }
-t_instance  ***init_instances(t_game *game, t_spritess *spritess, t_map *map)
+void    init_instances(t_game *game, t_spritess *spritess, t_map *map)
 {
-    t_instance  ***instances;
     t_pos       pos;
 
     pos.y = 0;
-    instances = malloc(sizeof(t_instance**) * (map->y_max + 1));
-    while (instances && pos.y <= map->y_max)
+    map->instances = malloc(sizeof(t_instance**) * (map->y_max + 1));
+    if (!map->instances)
+        return (0);
+    while (map->instances && pos.y <= map->y_max)
     {
         pos.x = 0;
-        instances[pos.y] = malloc(sizeof(t_instance*) * (map->x_max + 1));
-        if (!instances[pos.y])
+        map->instances[pos.y] = malloc(sizeof(t_instance*) * (map->x_max + 1));
+        if (!map->instances[pos.y])
+            free_instances(map->instances, map);
+        while (map->instances && pos.x <= map->x_max)
         {
-            free_instances(instances, map);
-            return (0);
-        }
-        while (instances && pos.x <= map->x_max)
-        {
-            instances[pos.y][pos.x] = init_instance(game, pos, map->grid[pos.y][pos.x], spritess);
-            if (!instances[pos.y][pos.x])
-            {
-                free_instances(instances, map);
-                return (0); // a fixer
-            }
+            map->instances[pos.y][pos.x] = init_instance(game, pos, map->grid[pos.y][pos.x], spritess);
+            if (!map->instances[pos.y][pos.x])
+                free_instances(map->instances, map);
             pos.x++;
         }
         pos.y++;
     }
-    return (instances);
 }
 

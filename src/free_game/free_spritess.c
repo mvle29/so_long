@@ -35,7 +35,7 @@ void    free_anim(t_anim *anim)
     free(anim);
 }
 
-void    free_anims(t_anim **anims)
+void    free_anims(t_sprite *sprite, t_anim **anims)
 {
     int i;
 
@@ -46,16 +46,17 @@ void    free_anims(t_anim **anims)
         i++;
     }
     free(anims);
+    sprite->anims = 0;
 }
 
 void    free_sprite(t_sprite *sprite)
 {
     if (sprite->anims)
-        free_anims(sprite->anims);
+        free_anims(sprite, sprite->anims);
     free(sprite);
 }
 
-void    free_spritess(t_spritess *spritess)
+void    free_spritess(t_game *game, t_spritess *spritess)
 {
     if (spritess->empty)
         free_sprite(spritess->empty);
@@ -68,4 +69,5 @@ void    free_spritess(t_spritess *spritess)
     if (spritess->exit)
         free_sprite(spritess->exit);
     free(spritess);
+    game->spritess = 0;
 }

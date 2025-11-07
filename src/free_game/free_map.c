@@ -12,19 +12,17 @@
 
 #include "../../include/so_long.h"
 
-void    free_instances(t_instance ***instances, t_map *map)
+void    free_instances(t_map *map, t_instance ***instances)
 {
     int x_max;
     int y_max;
     int x;
     int y;
-    int erreur;
 
     y_max = map->y_max;
     x_max = map->x_max;
     y = 0;
-    erreur = 0;
-    while (y <= y_max && !erreur && instances[y])
+    while (y <= y_max && instances[y] && instances[y][0])
     {
         x = 0;
         while (x <= x_max && instances[y][x])
@@ -32,13 +30,14 @@ void    free_instances(t_instance ***instances, t_map *map)
             free(instances[y][x]);
             x++;
         }
-        if (x <= x_max && !instances[y][x])
-            erreur = 1;
         free(instances[y]);
         y++;
     }
+    if (y <= y_max && instances[y])
+        free(instances[y]);
     free(instances);
-    map->instances = 0;
+    if (map)
+        map->instances = 0;
 }
 
 void    free_grid(t_map *map, char **grid)
@@ -52,18 +51,22 @@ void    free_grid(t_map *map, char **grid)
         y++;
     }
     free(grid);
+    if (map)
+        map->grid = 0;
 }
 
-void free_map(t_map *map)
+void free_map(t_game *game, t_map *map)
 {
     if (map)
     {
         if (map->grid)
             free_grid(map, map->grid);
         if (map->instances)
-            free_instances(map->instances, map);
+            free_instances(map, map->instances);
         if (map->player)
             free(map->player);
         free(map);
     }
+    if (game)
+        game->map = 0;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_sprite_anims.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mathvall <mathvall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 21:42:31 by mathou            #+#    #+#             */
-/*   Updated: 2025/10/17 09:06:59 by marvin           ###   ########.fr       */
+/*   Updated: 2025/11/07 13:38:40 by mathvall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,11 +92,11 @@ void    init_anim(t_anim *anim, t_sprite *sprite, char *path, t_context *cur)
         new->next = malloc(sizeof(t_anim));
         if (!new->next)
         {
-            free_anims(sprite->anims);
-            sprite->anims = 0;
+            free_anims(sprite, sprite->anims);
             return ;
         }
         new->name = anim->name;
+        new->fpus = anim->fpus;
         new->text = init_anim_txt(i, sprite, path, cur->mlx);
         i++;
     }
@@ -116,19 +116,19 @@ void    init_anims(t_sprite *sprite, char **text, char *path, t_context *cur)
         accurate_path = ft_strsep("text", path, text[i], "/");
         sprite->anims[i] = malloc(sizeof(t_anim));
         if (accurate_path && sprite->anims[i])
-            sprite->anims[i]->name = text[i];
-        if (accurate_path && sprite->anims[i])
+            sprite->anims[i]->name = ft_strdup(text[i]);
+        if (accurate_path && sprite->anims[i] && sprite->anims[i]->name)
+            sprite->anims[i]->fpus = ft_atoi(text[i + 1]);
+        if (accurate_path && sprite->anims[i] && sprite->anims[i]->name)
             init_anim(sprite->anims[i], sprite, accurate_path, cur);
-        if (!accurate_path || !sprite->anims[i] || !sprite->anims[i]->text)
+        if (accurate_path)
+            free(accurate_path);
+        if (!sprite->anims[i] || !sprite->anims[i]->name || !sprite->anims[i]->text)
         {
-            if (accurate_path)
-                free(accurate_path);
-            free_anims(sprite->anims);
-            sprite->anims = 0;
+            free_anims(sprite, sprite->anims);
             return ;
         }
-        free(accurate_path);
-        i++;
+        i += 2;
     }
     if (sprite->anims)
         sprite->anims[i] = 0;

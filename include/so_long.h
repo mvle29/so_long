@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mathvall <mathvall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/03 14:29:27 by mathou            #+#    #+#             */
-/*   Updated: 2025/10/21 18:03:16 by marvin           ###   ########.fr       */
+/*   Updated: 2025/11/07 13:38:33 by mathvall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #define SO_LONG_H
 
 #include <stdlib.h>
+#include <sys/time.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
@@ -69,15 +70,15 @@ typedef struct s_anim_player
     img     *exit;
     img     *collectible;
 }       t_anim_player;*/
-
 typedef struct s_anim t_anim;
 
 typedef struct s_anim
 {
-    t_context   *text;
-    char        *name;
-    int         fpt; //nb of frames occupied per texture, ca peut etre individualisé tt comme ça peut etre generalisé
-    t_anim      *next;
+    t_context       *text;
+    char            *name;
+    struct timeval  *tv;
+    int             fpus; //nb of frames occupied per texture, ca peut etre individualisé tt comme ça peut etre generalisé
+    t_anim          *next;
 }       t_anim;
 
 typedef struct s_sprite
@@ -151,13 +152,13 @@ int         init_map_grid(t_map *map);
 
 t_instance  ***init_instances(t_game *game, t_spritess *spritess, t_map *map);
 t_instance  *init_instance(t_game *game, t_pos map_pos, char c, t_spritess *spritess);
-void        set_instance_anim(t_instance *instance, char *anim_name);
+void        set_instance_anim(t_instance *instance, char *anim_name, struct timeval tv);
 
-t_mlx       *init_mlx(void);
+void        *init_mlx(t_game *game);
 t_context   *init_context(t_mlx *mlx);
 
-t_spritess  *init_spritess(t_context *cur);
-t_sprite    *init_sprite(char *name, char *path, char *hb, t_context *cur);
+void        *init_spritess(t_game *game, t_context *cur);
+t_sprite    *init_sprite(char *name, char *path, char *hb, t_context *cur); //fpt a rajt, dans le path ? Chaque anim a un fpt propre ?
 
 void        init_anims(t_sprite *sprite, char **text, char *path, t_context *cur);
 void        init_hb(t_sprite *sprite, char *hb);
@@ -168,14 +169,14 @@ t_hitbox    *init_cam(t_game *game);
 
 void    free_game(t_game *game);
 
-void    free_map(t_map *map);
+void    free_map(t_game *game, t_map *map);
 void    free_grid(t_map *map, char **grid);
 void    free_instances(t_instance ***instances, t_map *map);
 
-void    free_mlx(t_mlx *mlx);
+void    free_mlx(t_game *game, t_mlx *mlx);
 void    free_context(t_context *context);
 
-void    free_spritess(t_spritess *spritess);
+void    free_spritess(t_game *game, t_spritess *spritess);
 void    free_sprite(t_sprite *sprite);
 
 void    free_anims(t_anim **anims);
@@ -186,7 +187,7 @@ int     display_error(char *str);
 // PARSING MAP :
 
 t_map   *map(char *av_map);
-int    map_grid(t_map *map, char *ber_file);
+int     map_grid(t_map *map, char *ber_file);
 char    *map_char(char *ber_file, t_map *map);
 int     original_value(t_map *map, int x, int y);
 int     valid_grid_info(t_map *map, int x, int y);

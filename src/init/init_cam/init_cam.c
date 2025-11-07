@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_cam.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mathvall <mathvall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 02:01:05 by mathou            #+#    #+#             */
-/*   Updated: 2025/10/17 09:52:53 by marvin           ###   ########.fr       */
+/*   Updated: 2025/11/06 17:50:10 by mathvall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
     t_pos   offset; // quand la cam bouge : on update l offset a partir du coin gauche superieur.
 }       t_cam;*/
 
-t_hitbox    *init_cam(t_game *game)
+void    *init_cam(t_game *game)
 {
     t_hitbox    *cam;
 

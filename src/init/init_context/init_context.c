@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_context.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mathvall <mathvall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/07 00:51:55 by mathou            #+#    #+#             */
-/*   Updated: 2025/10/13 05:37:02 by marvin           ###   ########.fr       */
+/*   Updated: 2025/11/06 13:42:50 by mathvall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ t_mlx   *init_mlx(void)
     mlx = malloc(sizeof(t_context));
     if (!mlx)
         return (0);
+    setzero_mlx(mlx);
     mlx->mlx = mlx_init();
     if (!mlx->mlx)
     {
@@ -50,6 +51,7 @@ t_context   *init_context(t_mlx *mlx)
     context = malloc(sizeof(t_context));
     if (!context)
         return (0);
+    setzero_context(mlx);
     context->mlx = mlx;
     context->img_h = context->mlx->win_h;
     context->img_w = context->mlx->win_w;
@@ -57,12 +59,8 @@ t_context   *init_context(t_mlx *mlx)
     context->ll = 0;
     context->endian = 0;
     context->img = mlx_new_image(mlx->mlx, context->img_w, context->img_h);
-    if (!context->img)
-    {
-        free(context);
-        return (0);
-    }
-    context->addr = mlx_get_data_addr(context->img, &context->bpp, &context->ll, &context->endian);
+    if (context->img)
+        context->addr = mlx_get_data_addr(context->img, &context->bpp, &context->ll, &context->endian);
     if (!context->addr)
     {
         free_context(context);

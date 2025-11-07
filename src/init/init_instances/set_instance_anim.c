@@ -26,19 +26,22 @@
     else if (!ft_strcmp(wall->sprite->anim[pos.y][pos.x]->sprite->name, "walls") &&)
 }*/
 
-void    set_instance_anim(t_instance *instance, char *anim_name)
+void    set_instance_anim(t_instance *instance, char *anim_name, struct timeval  *tv)
 {
     int     i;
 
-    if (instance->cur && !ft_strcmp(instance->cur->name, anim_name))
+    if (instance->cur && !ft_strcmp(instance->cur->name, anim_name)
+    && (!instance->cur->tv || tv->tv_sec - instance->cur->tv->tv_sec >= instance->cur->fpt))
     {
+        instance->cur->tv = tv;
         instance->cur = instance->cur->next;
         if (!instance->cur->text)
             instance->cur = instance->cur->next;
         return ;
     }
-    else
+    else if (instance->cur && ft_strcmp(instance->cur->name, anim_name))
     {
+        instance->cur->tv = tv;
         i = 0;
         while (instance->sprite->anims[i])
         {
