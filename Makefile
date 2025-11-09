@@ -23,4 +23,4 @@ libft/libft.a :
 	make -C libft/ clean
 
 minilibx_linux/libmlx.a :
-	make -C minilibx_linux/
+	make -C minilibx-linux/

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mathvall <mathvall@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 17:03:06 by mathou            #+#    #+#             */
-/*   Updated: 2025/10/23 11:37:29 by marvin           ###   ########.fr       */
+/*   Updated: 2025/11/09 20:08:41 by mathvall         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void    pixel_copy(t_game *game, t_pos txt_poss, t_pos img_poss, t_anim *cur)
 int    render(t_game *game)
 {
     // update_instances(game->spritess->instances, game->map); // on get la hb_map, on l update avec la touche pressee et avec l overlap, on update la map en consequence
-    render_background(game, game->map, game->spritess, game->cam);
+    //render_background(game, game->map, game->spritess, game->cam);
     render_ground(game, game->map, game->spritess, game->cam);
     render_instances(game, game->map, game->map->instances, game->cam);
     //display_recipe(game->spritess->recipe, game->map, game->context);
